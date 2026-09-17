@@ -376,6 +376,38 @@ not part of the running game.
       anywhere, including on another inventory slot, now always closes an
       open menu, which is the correct behavior once opening moved off of
       `click` entirely.
+19. **Placement range narrowed to 1 tile; highlight border made crisp.**
+    - `PLACEMENT_RANGE` (`config.js`) changed from `5` to `1` — you can
+      now only place on a tile immediately adjacent to (or under) the
+      player, not 5 tiles out.
+    - The highlight border looked thick/blurry even at `lineWidth = 1`.
+      Cause: `screenX`/`screenY` were fractional (camera position `camX`/
+      `camY` is a continuous float, not tile-aligned), so `strokeRect`
+      drew its 1px line straddling two rows of physical pixels, which the
+      canvas anti-aliases into a soft ~2px line. Fixed in
+      `drawPlacementRange()` (`camera.js`) using the standard canvas
+      crisp-line technique: round the position to a whole pixel, then
+      offset by `+0.5` so the 1px stroke centers exactly on the pixel
+      grid instead of between two pixels.
+20. **Highlight grid centering fixed to use feet, not sprite center.**
+    `getPlayerTile()` (`inventory.js`) used to compute the player's "tile"
+    directly from `player.y` — but `player.y` is the vertical center of
+    the whole sprite bounding box, and the sprite is 3 tiles tall
+    (`DRAW_SIZE` = 48 world px, `TILE` = 16), so that center point is
+    roughly chest height, not the ground contact point. Screenshot showed
+    the character visually standing with their feet near the bottom edge
+    of the highlighted 3×3 grid (or spilling into the row below) instead
+    of centered in it. Fixed by computing the same feet-position math
+    already used for the ground shadow (`SPRITE_FEET_FRACTION`) and using
+    *that* to pick the row: `feetWorldY = player.y + (SPRITE_FEET_FRACTION
+    - 0.5) * DRAW_SIZE`. Since `isWithinPlacementRange()` and
+    `drawPlacementRange()` both call `getPlayerTile()` rather than
+    duplicating the row/col math, this one fix covers both the visual
+    highlight and the actual placement validity check consistently. Note
+    the character's head/upper body will still visually extend above the
+    grid — that's expected for a sprite taller than one tile, the same as
+    most top-down RPGs; what matters is the *feet* (contact point) landing
+    in the center cell, not the whole sprite fitting inside it.
 
 ## Known trade-offs / things worth knowing if you keep tweaking
 

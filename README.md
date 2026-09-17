@@ -98,7 +98,7 @@ Double-click `index.html` to open it directly in your browser.
   placing these next to each other builds a grass patch with clean
   edges, instead of scattering single grass tufts around.
 - Clicking **Hold** (or a hotbar slot) picks up that item. While holding
-  an item, every tile within **5 tiles** of the character (in every
+  an item, every tile within **1 tile** of the character (in every
   direction — a square range, not a circle) is outlined:
   - **light/white border** — empty, valid to place on
   - **amber/gold border** — already has a *different* item there — placing

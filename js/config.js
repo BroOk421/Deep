@@ -51,4 +51,4 @@ const ZOOM_STEP = 0.15;
 const INVENTORY_ROWS = 8;
 const INVENTORY_COLS = 9;      // 8x9 = 72 slots total
 const HOTBAR_SIZE = 7;         // hotbar = the first 7 slots of inventory row 0
-const PLACEMENT_RANGE = 5;     // tiles around the player where items can be placed (Chebyshev distance)
+const PLACEMENT_RANGE = 1;     // tiles around the player where items can be placed (Chebyshev distance)

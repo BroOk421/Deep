@@ -80,9 +80,17 @@ function getGroundItemId(col, row) {
 }
 
 function getPlayerTile() {
+  // Use the character's FEET position, not the raw player.y (which is the
+  // vertical center of the whole sprite's bounding box). The sprite is
+  // taller than one tile (DRAW_SIZE = 48 world px = 3 tiles), so the
+  // "center" of the box is roughly chest height, not where the character
+  // is actually standing — that's why the highlighted tile looked shifted
+  // up from the character in testing. This reuses the same feet math as
+  // the ground shadow (SPRITE_FEET_FRACTION), so both line up consistently.
+  const feetWorldY = player.y + (SPRITE_FEET_FRACTION - 0.5) * DRAW_SIZE;
   return {
     col: Math.floor(player.x / TILE),
-    row: Math.floor(player.y / TILE)
+    row: Math.floor(feetWorldY / TILE)
   };
 }
 

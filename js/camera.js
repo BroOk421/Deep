@@ -161,8 +161,8 @@ function drawPlacementRange(camX, camY) {
       const outOfBounds = col < 0 || row < 0 || col >= COLS || row >= ROWS;
       if (outOfBounds) continue; // nothing to highlight past the edge of the map
 
-      const screenX = (col * TILE - camX) * zoom;
-      const screenY = (row * TILE - camY) * zoom;
+      const screenX = Math.round((col * TILE - camX) * zoom);
+      const screenY = Math.round((row * TILE - camY) * zoom);
       const existingId = getGroundItemId(col, row);
 
       let color;
@@ -174,9 +174,13 @@ function drawPlacementRange(camX, camY) {
         color = "rgba(255,200,60,0.9)";     // different item there — will be replaced
       }
 
+      // +0.5 aligns the stroke to the pixel grid so a 1px lineWidth renders
+      // as a genuinely crisp 1px line instead of a blurry ~2px line (a
+      // stroke centered on a whole-number coordinate straddles two rows/
+      // columns of pixels and gets anti-aliased into a soft double line).
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(screenX + 1, screenY + 1, size - 2, size - 2);
+      ctx.lineWidth = 1;
+      ctx.strokeRect(screenX + 0.5, screenY + 0.5, size - 1, size - 1);
     }
   }
 }
