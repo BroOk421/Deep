@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPG Prototype</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <!-- top toolbar: manual save + export/import (for moving a save to another PC) -->
+  <div id="top-toolbar">
+    <button id="btn-save" title="Save now">💾 Save</button>
+    <button id="btn-export" title="Export save to a file">⬇ Export</button>
+    <button id="btn-import" title="Import save from a file">⬆ Import</button>
+    <input type="file" id="import-file-input" accept="application/json" style="display:none">
+  </div>
+
+  <!-- always-visible hotbar (slots 1-7), bottom of screen -->
+  <div id="hotbar"></div>
+
+  <!-- full inventory panel, toggled with B -->
+  <div id="inventory-overlay" class="hidden">
+    <div id="inventory-panel">
+      <div id="inventory-title">Inventory <span class="hint">(B to close)</span></div>
+      <div id="inventory-grid"></div>
+    </div>
+  </div>
+
+  <!-- popup menu shown when clicking an inventory item: Hold, or assign to 1-7 -->
+  <div id="item-action-menu" class="hidden"></div>
+
+  <!-- Load order matters: each file depends on the ones before it -->
+  <script src="js/config.js"></script>
+  <script src="js/assets.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/save.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
